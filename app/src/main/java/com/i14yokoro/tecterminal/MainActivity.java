@@ -1,21 +1,23 @@
 package com.i14yokoro.tecterminal;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private  final String BR = System.getProperty("line.separator");
     private ArrayList<MyListItem> items;
     private ListView mListView;
     protected MyListItem myListItem;
@@ -27,31 +29,46 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         items = new ArrayList<>();
-        final MyBaseAdapter myBaseAdapter = new MyBaseAdapter(MainActivity.this ,items);
+        final LineAdapter lineAdapter = new LineAdapter(MainActivity.this ,items);
 
         mListView = (ListView) findViewById(R.id.listView);
-        inputText = (EditText) findViewById(R.id.input_text);
-        mListView.setAdapter(myBaseAdapter);
+        mListView.setAdapter(lineAdapter);
 
         if (items.size() == 0){
-            myListItem = new MyListItem(0, "boot",  false);
+            myListItem = new MyListItem(0, "boot\n",  false);
             items.add(myListItem);
-            myBaseAdapter.notifyDataSetChanged();
+            myListItem = new MyListItem(1, "",  false);
+            items.add(myListItem);
+            lineAdapter.notifyDataSetChanged();
         }
 
-        inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        if (lineAdapter.isNextFlag()){
+            myListItem = new MyListItem(items.size()-1, "",  false);
+            items.add(myListItem);
+            lineAdapter.notifyDataSetChanged();
+        }
+    }
+
+        /**
+        mListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE){
-                    String strInputText = inputText.getText().toString();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("debug***********","debug開始");
+
+                LinearLayout linear = (LinearLayout)view;
+                EditText inputText = (EditText)linear.findViewById(R.id.input_text);
+                String strInputText = inputText.getText().toString();
+                Log.d("debug***********",strInputText);
+                if(strInputText.lastIndexOf(BR) != -1){
                     myListItem.setUpText(strInputText);
                     items.add(myListItem);
-                    myBaseAdapter.notifyDataSetChanged();
-                }
-                return false;
+                    lineAdapter.notifyDataSetChanged(); }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
-    }
+    } **/
 
 }

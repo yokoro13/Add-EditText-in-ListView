@@ -5,28 +5,25 @@ import android.os.Parcelable;
 
 public class MyListItem{
     private int id;
-    private String upText;
+    private String inputText;
     private boolean focus;
-
-    public MyListItem(){
-    }
-
-    public MyListItem(int id, String upText, boolean focus){
+    
+    public MyListItem(int id, String inputText, boolean focus){
         this.id = id;
-        this.upText = upText;
+        this.inputText = inputText;
         this.focus = focus;
     }
 
-    public void setUpText(String upText) {
-        this.upText = upText;
+    public void setInputText(String inputText) {
+        this.inputText = inputText;
     }
 
     public void setId(int id){
         this.id = id;
     }
 
-    public String getUpText() {
-        return upText;
+    public String getInputText() {
+        return inputText;
     }
 
     public long getId(){
