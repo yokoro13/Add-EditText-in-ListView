@@ -33,42 +33,30 @@ public class MainActivity extends AppCompatActivity {
 
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(lineAdapter);
+        inputText = (EditText) findViewById(R.id.inputText);
 
         if (items.size() == 0){
-            myListItem = new MyListItem(0, "boot\n",  false);
-            items.add(myListItem);
-            myListItem = new MyListItem(1, "",  false);
+            myListItem = new MyListItem(0, "boot");
             items.add(myListItem);
             lineAdapter.notifyDataSetChanged();
         }
 
-        if (lineAdapter.isNextFlag()){
-            myListItem = new MyListItem(items.size()-1, "",  false);
-            items.add(myListItem);
-            lineAdapter.notifyDataSetChanged();
-        }
-    }
-
-        /**
-        mListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("debug***********","debug開始");
-
-                LinearLayout linear = (LinearLayout)view;
-                EditText inputText = (EditText)linear.findViewById(R.id.input_text);
-                String strInputText = inputText.getText().toString();
-                Log.d("debug***********",strInputText);
-                if(strInputText.lastIndexOf(BR) != -1){
-                    myListItem.setUpText(strInputText);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.d("debug*********","editAction");
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    Log.d("debug*********","pushed Enter");
+                    String strInputText = inputText.getText().toString();
+                    myListItem = new MyListItem(items.size()-1, strInputText);
                     items.add(myListItem);
-                    lineAdapter.notifyDataSetChanged(); }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                    lineAdapter.notifyDataSetChanged();
+                    int itemCount = mListView.getCount();
+                    mListView.setSelection(itemCount - 1);
+                    inputText.setText(null);
+                }
+                return false;
             }
         });
-
-    } **/
-
+    }
 }

@@ -20,9 +20,9 @@
             android:textColor="#000000"
             android:textSize="18dp" />
 
-        <!-- テキスト入力 -->
-        <EditText
-            android:id="@+id/input_text"
+        <!-- データ表示用 -->
+        <TextView
+            android:id="@+id/outputText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.1"

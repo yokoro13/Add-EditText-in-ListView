@@ -25,12 +25,8 @@ public class LineAdapter extends BaseAdapter {
     LayoutInflater layoutInflater = null;
     protected MyListItem myListItem;
 
-    private boolean nextFlag = false;
-
-    private String inText = "";
-
     private class ViewHolder{
-        EditText inputText;
+        TextView outputText;
     }
 
     public LineAdapter(Context context, ArrayList<MyListItem> items){
@@ -53,10 +49,6 @@ public class LineAdapter extends BaseAdapter {
         return items.get(position).getId();
     }
 
-    public boolean isNextFlag(){
-        return nextFlag;
-    }
-
     @Override
     public View getView(final int position, View convertView, ViewGroup parent){
         View view = convertView;
@@ -68,80 +60,16 @@ public class LineAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             holder = new ViewHolder();
 
-            view = layoutInflater.inflate(R.layout.row_input,parent,false);
-            holder.inputText = (EditText) view.findViewById(R.id.input_text);
+            view = layoutInflater.inflate(R.layout.row_output,parent,false);
+            holder.outputText = (TextView) view.findViewById(R.id.outputText);
 
             view.setTag(holder);
         }
         else {
             holder = (ViewHolder) view.getTag();
         }
-        final MyListItem item = items.get(position);
 
-        if (holder.inputText.getTag() instanceof TextWatcher) {
-            holder.inputText.removeTextChangedListener((TextWatcher) (holder.inputText.getTag()));
-        }
-
-        holder.inputText.setHint(position + ".");
-        if(TextUtils.isEmpty(item.getInputText())){
-            holder.inputText.setTextKeepState("");
-        } else {
-            holder.inputText.setTextKeepState(item.getInputText());
-        }
-
-        if(item.isFocus()){
-            if(!holder.inputText.isFocused()){
-                holder.inputText.requestFocus();
-            }
-            CharSequence text = item.getInputText();
-
-            holder.inputText.setSelection(TextUtils.isEmpty(text) ? 0 : text.length());
-        } else {
-            if(holder.inputText.isFocused()){
-                holder.inputText.clearFocus();
-            }
-        }
-
-        holder.inputText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP){
-                    final boolean focus = item.isFocus();
-                    check(position);
-
-                    if(!focus && !holder.inputText.isFocused()){
-                        holder.inputText.requestFocus();
-                        holder.inputText.onWindowFocusChanged(true);
-                    }
-                }
-                return false;
-            }
-        });
-
-        final TextWatcher watcher = new SimpleTextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(TextUtils.isEmpty(s)){
-                    item.setInputText(null);
-                } else {
-                    item.setInputText(String.valueOf(s));
-                    if(String.valueOf(s) == "2"){
-                        nextFlag = true;
-                    }
-                }
-            }
-        };
-
-        holder.inputText.addTextChangedListener(watcher);
-        holder.inputText.setTag(watcher);
-
+        holder.outputText.setText(myListItem.getOutputText());
         return view;
-    }
-
-    private void check(int position){
-        for(MyListItem l : items){
-            l.setFocus(false);
-        }
-        items.get(position).setFocus(true);
     }
 }
