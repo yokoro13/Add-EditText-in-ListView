@@ -16,9 +16,11 @@
             android:id="@+id/bracket"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="> "
-            android:textColor="#000000"
-            android:textSize="18dp" />
+            android:text="@string/bracket"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
         <!-- データ表示用 -->
         <EditText
