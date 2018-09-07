@@ -16,7 +16,7 @@
         android:layout_alignParentTop ="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:divider="#00000000"
+        android:divider="@color/transparent"
         android:scrollbars="vertical" />
 
 </RelativeLayout>

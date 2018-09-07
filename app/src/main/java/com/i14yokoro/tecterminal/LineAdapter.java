@@ -73,6 +73,11 @@ public class LineAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
+        //入力したものにはフォーカスが合わないように
+        if(!myListItem.isFocus())
+            holder.outputText.setEnabled(false);
+        else holder.outputText.setEnabled(true);
+
         holder.outputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
