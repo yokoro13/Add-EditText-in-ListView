@@ -11,55 +11,61 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-
-    private final String clearCommand = "zl";
+/**
+ * Activity内の処理を記述
+ * 主にViewの表示
+ */
+public class MainActivity extends AppCompatActivity implements InputListener{
 
     private ArrayList<MyListItem> items;
     private ListView mListView;
     protected MyListItem myListItem;
 
-    private EditText inputText;
+    private InputNotify inputNotify = null;
+
+    private  LineAdapter  lineAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         items = new ArrayList<>();
-        final LineAdapter lineAdapter = new LineAdapter(MainActivity.this ,items);
+        inputNotify = new InputNotify();
+        lineAdapter = new LineAdapter(MainActivity.this ,items, inputNotify);
+
+        inputNotify.setListener(this);
 
         mListView = (ListView) findViewById(R.id.listView);
         mListView.setAdapter(lineAdapter);
-        inputText = (EditText) findViewById(R.id.inputText);
 
-        myListItem = new MyListItem(0, "boot");
+        myListItem = new MyListItem(0, "boot", false);
+        items.add(myListItem);
+        myListItem = new MyListItem(items.size()-1, "", true);
         items.add(myListItem);
         lineAdapter.notifyDataSetChanged();
 
-        inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("debug*********","editAction");
-                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    Log.d("debug*********","pushed Enter");
-                    String strInputText = inputText.getText().toString();
-                    myListItem = new MyListItem(items.size()-1, strInputText);
-                    items.add(myListItem);
-                    lineAdapter.notifyDataSetChanged();
-                    int itemCount = mListView.getCount();
-                    mListView.setSelection(itemCount - 1);
-                    inputText.setText(null);
-                    if(strInputText.equals(clearCommand)){
-                        Log.d("debug********","clear");
-                        items.clear();
-                        lineAdapter.notifyDataSetChanged();
-                    }
-                }
-                return false;
-            }
-        });
     }
+
+    @Override
+    public void inputEnter() {
+        Log.d("debug*********", "pushed Enter");
+
+        lineAdapter.notifyDataSetChanged();
+        int itemCount = mListView.getCount();
+        mListView.setSelection(itemCount - 1);
+        Log.d("debug******",Integer.toString(itemCount-1));
+        //mListView.setSelection(items.size());
+    }
+
+    @Override
+    public void inputClearCommand(){
+        Log.d("debug*********", "input clear");
+        items.clear();
+        lineAdapter.notifyDataSetChanged();
+    }
+
 }

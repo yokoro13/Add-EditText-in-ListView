@@ -17,14 +17,6 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:divider="#00000000"
-        android:scrollbars="vertical"
-        android:paddingBottom="40dp"/>
+        android:scrollbars="vertical" />
 
-    <EditText
-        android:id="@+id/inputText"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignBottom="@+id/listView"
-        android:layout_centerHorizontal="true"
-        android:inputType="text" />
 </RelativeLayout>
