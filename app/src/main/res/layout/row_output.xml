@@ -18,7 +18,9 @@
             android:layout_height="match_parent"
             android:text="@string/bracket"
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
         <!-- データ表示用 -->
         <EditText

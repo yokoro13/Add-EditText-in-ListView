@@ -21,10 +21,9 @@ public class LineAdapter extends BaseAdapter {
 
     private final String clearCommand = "zl";
 
-    private  final String BR = System.getProperty("line.separator");
     private Context context;
     private ArrayList<MyListItem> items;
-    LayoutInflater layoutInflater = null;
+    LayoutInflater layoutInflater ;
     protected MyListItem myListItem;
     private InputNotify inputNotify;
 
@@ -61,7 +60,6 @@ public class LineAdapter extends BaseAdapter {
         myListItem = items.get(position);
 
         if (view == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             holder = new ViewHolder();
 
             view = layoutInflater.inflate(R.layout.row_output,parent,false);
@@ -75,8 +73,11 @@ public class LineAdapter extends BaseAdapter {
 
         //入力したものにはフォーカスが合わないように
         if(!myListItem.isFocus())
-            holder.outputText.setEnabled(false);
-        else holder.outputText.setEnabled(true);
+            holder.outputText.setFocusable(false);
+        else {
+            holder.outputText.setFocusable(true);
+            holder.outputText.setFocusableInTouchMode(true);
+        }
 
         holder.outputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -88,9 +89,7 @@ public class LineAdapter extends BaseAdapter {
                     myListItem = new MyListItem(items.size() - 1, strInputText, false);
                     items.set(items.size()-1, myListItem);
 
-                    /**
-                     * コマンドとかはこんな感じで実装
-                     */
+                    //コマンドとかはこんな感じで実装
                     if(strInputText.equals(clearCommand)){
                         inputNotify.notifyInputClear();
                     }
@@ -98,13 +97,13 @@ public class LineAdapter extends BaseAdapter {
                     myListItem = new MyListItem(items.size() , "", true);
                     items.add(myListItem);
                     inputNotify.notifyInputEnter();
+                    holder.outputText.requestFocus();
                 }
                 return false;
             }
         });
 
         holder.outputText.setText(myListItem.getOutputText());
-        holder.outputText.requestFocus();
 
         return view;
     }
