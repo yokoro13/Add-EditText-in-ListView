@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String clearCommand = "zl";
 
-    private  final String BR = System.getProperty("line.separator");
     private ArrayList<MyListItem> items;
     private ListView mListView;
     protected MyListItem myListItem;
@@ -35,11 +35,9 @@ public class MainActivity extends AppCompatActivity {
         mListView.setAdapter(lineAdapter);
         inputText = (EditText) findViewById(R.id.inputText);
 
-        if (items.size() == 0){
-            myListItem = new MyListItem(0, "boot");
-            items.add(myListItem);
-            lineAdapter.notifyDataSetChanged();
-        }
+        myListItem = new MyListItem(0, "boot");
+        items.add(myListItem);
+        lineAdapter.notifyDataSetChanged();
 
         inputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -54,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
                     int itemCount = mListView.getCount();
                     mListView.setSelection(itemCount - 1);
                     inputText.setText(null);
+                    if(strInputText.equals(clearCommand)){
+                        Log.d("debug********","clear");
+                        items.clear();
+                        lineAdapter.notifyDataSetChanged();
+                    }
                 }
                 return false;
             }
